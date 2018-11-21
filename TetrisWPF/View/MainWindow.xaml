@@ -1,0 +1,106 @@
+﻿<Window x:Class="Tetris.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+        xmlns:local="clr-namespace:Tetris"    
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Tetris" 
+        Icon="Tetris_icon.ico"
+        Height="400"
+        Width="{Binding WindowWidth, Mode=TwoWay, diag:PresentationTraceSources.TraceLevel=High}"
+        >
+    <Window.InputBindings>
+        <KeyBinding Key="Up" Command="{Binding RotateShape}"/>
+        <KeyBinding Key="Down" Command="{Binding MoveShape}" CommandParameter="down" />
+        <KeyBinding Key="Left" Command="{Binding MoveShape}" CommandParameter="left" />
+        <KeyBinding Key="Right" Command="{Binding MoveShape}" CommandParameter="right" />
+        <KeyBinding Key="P" Command="{Binding PauseGame}"/>
+        <KeyBinding Key="Esc" Command="{Binding ExitGame}"/>
+    </Window.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="5"/>
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Row="0" Grid.ColumnSpan="4">
+            <MenuItem Header="Menu">
+                <MenuItem Header="New game"  Command="{Binding StartNewGame}"/>
+                <Separator />
+                <MenuItem Header="Pause game" Command="{Binding PauseGame}" IsCheckable="True" />
+                <Separator />
+                <MenuItem Header="Exit game" Command="{Binding ExitGame}"/>
+            </MenuItem>
+        </Menu>
+        <ItemsControl Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Fields}" >
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid 
+                        Rows="16" 
+                        Columns="{Binding ColumnNumber}"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Label BorderBrush="Gray" BorderThickness="0.5" >
+                        <Label.Style>
+                            <Style TargetType="Label">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsFree}" Value="True">
+                                        <Setter Property="Background" Value="White"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsFree}" Value="False">
+                                        <Setter Property="Background" Value="Blue"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>                        
+                        </Label.Style>
+                    </Label>                     
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <StackPanel Grid.Row="1" Grid.Column="2">
+            <Label FontSize="15" FontWeight="Bold">Score</Label>
+            <Label FontSize="20" FontWeight="Bold" Content="{Binding Score}"/>
+            <Label FontSize="15" FontWeight="Bold">Next shape</Label>
+            <ItemsControl ItemsSource="{Binding NextShapeFields}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid 
+                            Rows="4" 
+                            Columns="4"
+                            Width="100"
+                            Height="100"
+                            />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Label BorderBrush="Gray" BorderThickness="0.5">
+                            <Label.Style>
+                                <Style TargetType="Label">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFree}" Value="True">
+                                            <Setter Property="Background" Value="White"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsFree}" Value="False">
+                                            <Setter Property="Background" Value="Blue"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Label.Style>
+                        </Label>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Grid>
+</Window>
