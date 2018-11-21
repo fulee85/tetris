@@ -7,8 +7,6 @@ using System.Windows.Threading;
 
 namespace Tetris
 {
-   
-
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -39,15 +37,19 @@ namespace Tetris
             _tableSizeDialog.DataContext = _viewModel;
             _tableSizeDialog.ShowDialog();
 
-            _view = new MainWindow();
-            _view.DataContext = _viewModel;
+            _view = new MainWindow
+            {
+                DataContext = _viewModel
+            };
             _view.Closed += _view_Closed;
             _view.Show();
 
-            _viewModel.startGame();
+            _viewModel.StartGame();
 
-            _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
             _timer.Tick += new EventHandler(Timer_Tick);
             _timer.Start();
         }
@@ -59,12 +61,12 @@ namespace Tetris
 
         private void _viewModel_NewGame(object sender, EventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke(new Action(() => this.startNewGame()));
+            Current.Dispatcher.BeginInvoke(new Action(() => this.startNewGame()));
         }
 
         private void _viewModel_Exit(object sender, EventArgs e)
         {
-            this.Shutdown();
+            Shutdown();
         }
 
         private void _viewModel_GameOver(object sender, GameOverEventArgs e)
@@ -73,11 +75,11 @@ namespace Tetris
             var answer = MessageBox.Show("Game over, your time: " + e.Time + " s\n Would you like a new Game?", "Game over", MessageBoxButton.YesNo);
             if (answer == MessageBoxResult.No)
             {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => this.Shutdown()));
+                Current.Dispatcher.BeginInvoke(new Action(() => this.Shutdown()));
             }
             else
             {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => this.startNewGame()));
+                Current.Dispatcher.BeginInvoke(new Action(() => this.startNewGame()));
             }          
         }
 
@@ -87,7 +89,7 @@ namespace Tetris
             _view.Hide();
             _tableSizeDialog.ShowDialog();
             _view.Show();
-            _viewModel.startGame();
+            _viewModel.StartGame();
             _timer.Start();
         }
 
@@ -98,7 +100,7 @@ namespace Tetris
 
         private void _view_Closed(object sender, EventArgs e)
         {
-            this.Shutdown();
+            Shutdown();
         }
     }
 }

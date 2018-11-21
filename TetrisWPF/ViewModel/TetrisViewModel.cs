@@ -78,7 +78,7 @@ namespace Tetris.ViewModel
 
             Fields = new ObservableCollection<TetrisField>();
             NextShapeFields = new ObservableCollection<TetrisField>();
-            for (Int32 i = 0; i < 16; i++)
+            for (int i = 0; i < 16; i++)
             {
                 NextShapeFields.Add(new TetrisField
                 {
@@ -123,14 +123,12 @@ namespace Tetris.ViewModel
 
         private void startNewGame()
         {
-            if (NewGame != null)
-                NewGame(this, EventArgs.Empty);
+            NewGame?.Invoke(this, EventArgs.Empty);
         }
 
         private void exitGame()
         {
-            if (Exit != null)
-                Exit(this, EventArgs.Empty);
+            Exit?.Invoke(this, EventArgs.Empty);
         }
 
         private void _tetrisModel_NextShapeStatusChanged(object sender, TetrisFieldChangedAgrs e)
@@ -152,8 +150,7 @@ namespace Tetris.ViewModel
 
         private void _tetrisModel_GameOver(object sender, GameOverArgs e)
         {
-            if (GameOver != null)
-                GameOver(this, new GameOverEventArgs { Time = e.GameTime }); 
+            GameOver?.Invoke(this, new GameOverEventArgs { Time = e.GameTime });
         }
 
         private void _tetrisModel_FieldStatusChanged(object sender, TetrisFieldChangedAgrs e)
@@ -168,9 +165,9 @@ namespace Tetris.ViewModel
             }
         }
 
-        public void startGame()
+        public void StartGame()
         {
-            createTable();
+            CreateTable();
             foreach (TetrisField label in NextShapeFields)
             {
                 label.IsFree = true;
@@ -179,10 +176,10 @@ namespace Tetris.ViewModel
             _tetrisModel.startNewGame(_columnNumber, _rowNumber);
         }
 
-        public void createTable()
+        public void CreateTable()
         {
             Fields.Clear();
-            for (Int32 i = 0; i < _rowNumber * _columnNumber; i++)
+            for (int i = 0; i < _rowNumber * _columnNumber; i++)
             {
                 Fields.Add(new TetrisField{ IsFree = true });
             }
@@ -190,8 +187,7 @@ namespace Tetris.ViewModel
 
         private void OnOKButtonPressed()
         {
-            if (TableSizeDialogClosed != null)
-                TableSizeDialogClosed(this, EventArgs.Empty);
+            TableSizeDialogClosed?.Invoke(this, EventArgs.Empty);
         }
     }
 }

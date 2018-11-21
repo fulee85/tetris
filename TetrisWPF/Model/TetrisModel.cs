@@ -11,20 +11,17 @@ using Tetris.Model.Structs;
 namespace Tetris.Model
 {
     public class TetrisModel
-    {       
-        private FieldStatus[][] gameTable;
-        private int xSize, ySize;
+    {
         private Shape actualShape;
         private Shape nextShape;
         private IShapeFactory shapeFactory;
-        private int gameTime;
         private int gameScore;
         private bool isGamePaused;
 
-        public int GameTime { get { return gameTime; } }
-        public FieldStatus[][] GameTable { get { return gameTable; } }
-        public int XSize { get { return xSize; } }
-        public int YSize { get { return ySize; } }
+        public int GameTime { get; private set; }
+        public FieldStatus[][] GameTable { get; private set; }
+        public int XSize { get; private set; }
+        public int YSize { get; private set; }
         public Coordinates[] ActualShapePosition { get { return actualShape.PartsCoordinates; } }
 
         public event EventHandler<TetrisFieldChangedAgrs> FieldStatusChanged;
@@ -34,19 +31,19 @@ namespace Tetris.Model
 
         public TetrisModel( IShapeFactory shapeFact = null)
         {           
-            shapeFactory = (shapeFact == null) ? new ShapeFactory() : shapeFact;
+            shapeFactory = shapeFact ?? new ShapeFactory();
         }
 
         public void startNewGame(int xSize, int ySize)
         {
             if (xSize < 4 || ySize < 10) throw new Exception("Game size should be bigger.");
-            this.xSize = xSize;
-            this.ySize = ySize;
+            this.XSize = xSize;
+            this.YSize = ySize;
 
             generateNewGameTable();
             nextShape = shapeFactory.getNewShape(xSize);
             setShapes();
-            gameTime = 0;
+            GameTime = 0;
             gameScore = 0;
             isGamePaused = false;
             if (ScoreChanged != null)
@@ -58,7 +55,7 @@ namespace Tetris.Model
             actualShape = nextShape;
             setViewTablePositionsNotFree(actualShape.PartsCoordinates);
             setViewNextShapePositionsFree(nextShape.PartsCoordinates);
-            nextShape = shapeFactory.getNewShape(xSize);
+            nextShape = shapeFactory.getNewShape(XSize);
             setViewNextShapePositionsNotFree(nextShape.PartsCoordinates);
         }
 
@@ -69,17 +66,17 @@ namespace Tetris.Model
 
         private void generateNewGameTable()
         {
-            gameTable = new FieldStatus[ySize][];
-            for (int i = 0; i < gameTable.Length; i++)
+            GameTable = new FieldStatus[YSize][];
+            for (int i = 0; i < GameTable.Length; i++)
             {
-                gameTable[i] = getEmptyRow();
+                GameTable[i] = getEmptyRow();
             }
         }
 
         private FieldStatus[] getEmptyRow()
         {
-            FieldStatus[] emptyRow = new FieldStatus[xSize];
-            for (int i = 0; i < xSize; i++)
+            FieldStatus[] emptyRow = new FieldStatus[XSize];
+            for (int i = 0; i < XSize; i++)
             {
                 emptyRow[i] = FieldStatus.FREE;
             }
@@ -88,7 +85,7 @@ namespace Tetris.Model
 
         public void stepGame()
         {
-            gameTime++;
+            GameTime++;
             if(stepShape(Directions.DOWN) == false)
             {
                 shapeLanded();
@@ -99,30 +96,29 @@ namespace Tetris.Model
         {
             foreach (Coordinates part in actualShape.PartsCoordinates)
             {
-                gameTable[part.y][part.x] = FieldStatus.NOT_FREE;
+                GameTable[part.y][part.x] = FieldStatus.NOT_FREE;
             }
             maintainGameTable();
             setShapes();
             if (!isPositionCoordinatesFree(actualShape.PartsCoordinates))
             {
-                if (GameOver != null)
-                    GameOver(this, new GameOverArgs(gameTime));
+                GameOver?.Invoke(this, new GameOverArgs(GameTime));
             }
         }       
 
         private void maintainGameTable()
         {
             int lastChangedRow = -1;
-            for (int y = 0; y < gameTable.Length; y++)
+            for (int y = 0; y < GameTable.Length; y++)
             {
-                if(gameTable[y].All(p => p == FieldStatus.NOT_FREE))
+                if(GameTable[y].All(p => p == FieldStatus.NOT_FREE))
                 {
                     gameScore++;
                     for (int i = y; i > 0; i--)
                     {
-                        gameTable[i] = gameTable[i - 1];
+                        GameTable[i] = GameTable[i - 1];
                     }
-                    gameTable[0] = getEmptyRow();
+                    GameTable[0] = getEmptyRow();
                     lastChangedRow = y;
                 }
             }
@@ -139,9 +135,9 @@ namespace Tetris.Model
         {
             for (int yIndex = lastChangedRow; yIndex >=0; yIndex--)
             {
-                for (int xIndex = 0; xIndex < xSize; xIndex++)
+                for (int xIndex = 0; xIndex < XSize; xIndex++)
                 {
-                    FieldStatusChanged(this, new TetrisFieldChangedAgrs(new Coordinates(xIndex, yIndex), gameTable[yIndex][xIndex]));
+                    FieldStatusChanged(this, new TetrisFieldChangedAgrs(new Coordinates(xIndex, yIndex), GameTable[yIndex][xIndex]));
                 }
             }
         }   
@@ -199,8 +195,8 @@ namespace Tetris.Model
 
         private bool isPositionValid(Coordinates position)
         {
-            return 0 <= position.x && position.x < xSize && 0 <= position.y && position.y < ySize &&
-                gameTable[position.y][position.x] == FieldStatus.FREE; 
+            return 0 <= position.x && position.x < XSize && 0 <= position.y && position.y < YSize &&
+                GameTable[position.y][position.x] == FieldStatus.FREE; 
         }
 
         private void setViewTablePositionsFree(IEnumerable<Coordinates> freePositions)
@@ -225,7 +221,7 @@ namespace Tetris.Model
         {
             foreach (Coordinates position in freePositions)
             {
-                Coordinates shiftedCoordinates = new Coordinates(position.x - xSize / 2 + 2, position.y);
+                Coordinates shiftedCoordinates = new Coordinates(position.x - XSize / 2 + 2, position.y);
                 if (NextShapeStatusChanged != null)
                     NextShapeStatusChanged(this, new TetrisFieldChangedAgrs(shiftedCoordinates, FieldStatus.FREE));
             }
@@ -235,7 +231,7 @@ namespace Tetris.Model
         {
             foreach (Coordinates position in notFreePositions)
             {
-                Coordinates shiftedCoordinates = new Coordinates(position.x - xSize / 2 + 2, position.y);
+                Coordinates shiftedCoordinates = new Coordinates(position.x - XSize / 2 + 2, position.y);
                 if (NextShapeStatusChanged != null)
                     NextShapeStatusChanged(this, new TetrisFieldChangedAgrs(shiftedCoordinates, FieldStatus.NOT_FREE));
             }
