@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tetris.Model.Structs;
 
 
@@ -15,16 +11,17 @@ namespace Tetris.Model.Shapes
         protected Coordinates[] shapeCoordinates;
         protected static Random randomGenerator = new Random();
 
-        protected Shape(int playFieldHorizontalSize)
-        { 
-            if (playFieldHorizontalSize < 4)
+        protected Shape(int tableCenter)
+        {
+            if (tableCenter < 2)
             {
                 throw new Exception("Too small playfield!");
             }
             shapeCoordinates = new Coordinates[4];
         }
 
-        public Coordinates[] PartsCoordinates {
+        public Coordinates[] PartsCoordinates
+        {
             get { return shapeCoordinates; }
             set { value.CopyTo(shapeCoordinates, 0); center = shapeCoordinates[1]; }
         }
@@ -35,7 +32,7 @@ namespace Tetris.Model.Shapes
             shapeCoordinates.CopyTo(positionAfterMove, 0);
             for (int i = 0; i < positionAfterMove.Length; i++)
             {
-                positionAfterMove[i] = Coordinates.Rotate90Degrees(center, positionAfterMove[i]); 
+                positionAfterMove[i] = Coordinates.Rotate90Degrees(center, positionAfterMove[i]);
             }
             return positionAfterMove;
         }

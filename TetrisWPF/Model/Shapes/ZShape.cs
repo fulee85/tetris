@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tetris.Model.Structs;
+﻿using Tetris.Model.Structs;
 
 namespace Tetris.Model.Shapes
 {
     public class ZShape : Shape
     {
-        public ZShape(int playFieldHorizontalSize) : base(playFieldHorizontalSize)
+        public ZShape(int tableCenter) : base(tableCenter)
         {
-            center = new Coordinates(playFieldHorizontalSize / 2, 1);
+            center = new Coordinates(tableCenter, 1);
+
             shapeCoordinates[0] = new Coordinates(center.x - 1, center.y);
             shapeCoordinates[1] = center;
             shapeCoordinates[2] = new Coordinates(center.x, center.y + 1);

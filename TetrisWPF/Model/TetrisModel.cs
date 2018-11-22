@@ -18,6 +18,7 @@ namespace Tetris.Model
         private int gameScore;
         private bool isGamePaused;
 
+        private int TableHorizontalCenter { get { return XSize / 2; } }
         public int GameTime { get; private set; }
         public FieldStatus[][] GameTable { get; private set; }
         public int XSize { get; private set; }
@@ -41,7 +42,7 @@ namespace Tetris.Model
             this.YSize = ySize;
 
             GenerateNewGameTable();
-            nextShape = shapeFactory.GetNewShape(xSize);
+            nextShape = shapeFactory.GetNewShape(TableHorizontalCenter);
             SetShapes();
             GameTime = 0;
             gameScore = 0;
@@ -54,7 +55,7 @@ namespace Tetris.Model
             actualShape = nextShape;
             SetViewTablePositionsNotFree(actualShape.PartsCoordinates);
             SetViewNextShapePositionsFree(nextShape.PartsCoordinates);
-            nextShape = shapeFactory.GetNewShape(XSize);
+            nextShape = shapeFactory.GetNewShape(TableHorizontalCenter);
             SetViewNextShapePositionsNotFree(nextShape.PartsCoordinates);
         }
 
@@ -135,7 +136,7 @@ namespace Tetris.Model
             {
                 for (int xIndex = 0; xIndex < XSize; xIndex++)
                 {
-                    FieldStatusChanged(this, new TetrisFieldChangedAgrs(new Coordinates(xIndex, yIndex), GameTable[yIndex][xIndex]));
+                    FieldStatusChanged?.Invoke(this, new TetrisFieldChangedAgrs(new Coordinates(xIndex, yIndex), GameTable[yIndex][xIndex]));
                 }
             }
         }   
@@ -217,7 +218,7 @@ namespace Tetris.Model
         {
             foreach (Coordinates position in freePositions)
             {
-                Coordinates shiftedCoordinates = new Coordinates(position.x - XSize / 2 + 2, position.y);
+                Coordinates shiftedCoordinates = new Coordinates(position.x - TableHorizontalCenter + 2, position.y);
                 NextShapeStatusChanged?.Invoke(this, new TetrisFieldChangedAgrs(shiftedCoordinates, FieldStatus.FREE));
             }
         }
@@ -226,7 +227,7 @@ namespace Tetris.Model
         {
             foreach (Coordinates position in notFreePositions)
             {
-                Coordinates shiftedCoordinates = new Coordinates(position.x - XSize / 2 + 2, position.y);
+                Coordinates shiftedCoordinates = new Coordinates(position.x - TableHorizontalCenter + 2, position.y);
                 NextShapeStatusChanged?.Invoke(this, new TetrisFieldChangedAgrs(shiftedCoordinates, FieldStatus.NOT_FREE));
             }
         }
