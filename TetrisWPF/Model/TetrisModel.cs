@@ -86,10 +86,7 @@ namespace Tetris.Model
         public void StepGame()
         {
             GameTime++;
-            if(StepShape(Directions.DOWN) == false)
-            {
-                ShapeLanded();
-            }
+            StepShapeDown();
         }
 
         private void ShapeLanded()
@@ -166,6 +163,7 @@ namespace Tetris.Model
 
             return TryChangeShapePosition(nextShapePositionCoordinates);
         }
+
         public void RotateShape()
         {
             if (actualShape == null || isGamePaused) return;        
@@ -186,17 +184,17 @@ namespace Tetris.Model
             return false;
         }
 
-
         private bool IsPositionCoordinatesFree(Coordinates[] shapePositionCoordinates)
         {
-            return shapePositionCoordinates.All(IsPositionValid);
+            return shapePositionCoordinates.All(PositionValid);
+
+            bool PositionValid(Coordinates position)
+            {
+                return 0 <= position.x && position.x < XSize && 0 <= position.y && position.y < YSize &&
+                    GameTable[position.y][position.x] == FieldStatus.FREE; 
+            }
         }
 
-        private bool IsPositionValid(Coordinates position)
-        {
-            return 0 <= position.x && position.x < XSize && 0 <= position.y && position.y < YSize &&
-                GameTable[position.y][position.x] == FieldStatus.FREE; 
-        }
 
         private void SetViewTablePositionsFree(IEnumerable<Coordinates> freePositions)
         {
