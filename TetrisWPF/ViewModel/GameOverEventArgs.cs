@@ -8,6 +8,6 @@ namespace Tetris.ViewModel
 {
     public class GameOverEventArgs : EventArgs
     {
-        public int Time { get; set; }
+        public int Score { get; set; }
     }
 }

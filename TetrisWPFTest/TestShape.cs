@@ -30,7 +30,7 @@ namespace TetrisWPFTest
             expectedCoordinatesAfterRotation[2] = new Coordinates(2, 4);
             expectedCoordinatesAfterRotation[3] = new Coordinates(2, 5);
 
-            Coordinates[] coordinatesAfterRotation = testShape.getShapePositionAfterRotation();
+            Coordinates[] coordinatesAfterRotation = testShape.GetShapePositionAfterRotation();
 
             for (int i = 0; i < 4; i++)
             {
@@ -55,7 +55,7 @@ namespace TetrisWPFTest
             expectedCoordinatesAfterMoveDown[2] = new Coordinates(4, 5);
             expectedCoordinatesAfterMoveDown[3] = new Coordinates(4, 6);
 
-            Coordinates[] coordinatesAfterMoveDown = testShape.getShapePositionAfterMove(Directions.DOWN);
+            Coordinates[] coordinatesAfterMoveDown = testShape.GetShapePositionAfterMove(Directions.DOWN);
 
             for (int i = 0; i < 4; i++)
             {
@@ -80,7 +80,7 @@ namespace TetrisWPFTest
             expectedCoordinatesAfterMoveLeft[2] = new Coordinates(1, 4);
             expectedCoordinatesAfterMoveLeft[3] = new Coordinates(1, 5);
 
-            Coordinates[] coordinatesAfterMoveLeft = testShape.getShapePositionAfterMove(Directions.LEFT);
+            Coordinates[] coordinatesAfterMoveLeft = testShape.GetShapePositionAfterMove(Directions.LEFT);
 
             for (int i = 0; i < 4; i++)
             {
@@ -105,7 +105,7 @@ namespace TetrisWPFTest
             expectedCoordinatesAfterMoveRight[2] = new Coordinates(4, 5);
             expectedCoordinatesAfterMoveRight[3] = new Coordinates(4, 6);
 
-            Coordinates[] coordinatesAfterMoveRight = testShape.getShapePositionAfterMove(Directions.RIGHT);
+            Coordinates[] coordinatesAfterMoveRight = testShape.GetShapePositionAfterMove(Directions.RIGHT);
 
             for (int i = 0; i < 4; i++)
             {

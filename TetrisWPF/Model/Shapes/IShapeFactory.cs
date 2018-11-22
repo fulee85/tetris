@@ -9,6 +9,6 @@ namespace Tetris.Model.Shapes
 {
     public interface IShapeFactory
     {
-        Shape getNewShape(int playFieldHorizontalSize);
+        Shape GetNewShape(int playFieldHorizontalSize);
     }
 }

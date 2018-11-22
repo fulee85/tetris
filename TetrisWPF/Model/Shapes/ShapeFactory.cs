@@ -10,14 +10,14 @@ namespace Tetris.Model.Shapes
     public class ShapeFactory : IShapeFactory
     {
         private Random randomGenerator;
-        private const int shapesNumber = 7;
+        private readonly int shapesNumber = 7;
 
         public ShapeFactory()
         {
             randomGenerator = new Random();
         }
 
-        public Shape getNewShape(int playFieldHorizontalSize)
+        public Shape GetNewShape(int playFieldHorizontalSize)
         {
             ShapeTypes shapeType = (ShapeTypes)randomGenerator.Next(shapesNumber);
             int initRotationNum = randomGenerator.Next(4);
@@ -54,7 +54,7 @@ namespace Tetris.Model.Shapes
             }       
             for (int i = 0; i < initRotationNum; i++)
             {
-                returnShape.PartsCoordinates = returnShape.getShapePositionAfterRotation();
+                returnShape.PartsCoordinates = returnShape.GetShapePositionAfterRotation();
             }
             return returnShape;
         }

@@ -20,7 +20,7 @@ namespace TetrisWPFTest
 
             int expectedXSize = 8;
             int expectedYSize = 16;
-            model.startNewGame(expectedXSize, expectedYSize);
+            model.StartNewGame(expectedXSize, expectedYSize);
 
             Assert.AreEqual(expectedXSize, model.XSize);
             Assert.AreEqual(expectedYSize, model.YSize);
@@ -42,11 +42,11 @@ namespace TetrisWPFTest
             int expectedXSize = 8;
             int expectedYSize = 16;                  
             TetrisModel model = new TetrisModel();
-            model.startNewGame(expectedXSize, expectedYSize);
+            model.StartNewGame(expectedXSize, expectedYSize);
 
-            model.stepGame();
+            model.StepGame();
             Assert.AreEqual(1, model.GameTime);
-            model.stepGame();
+            model.StepGame();
             Assert.AreEqual(2, model.GameTime);
         }
 
@@ -58,7 +58,7 @@ namespace TetrisWPFTest
             var shapeFactory = new Mock<IShapeFactory>();
             shapeFactory.Setup(sf => sf.getNewShape(expectedXSize)).Returns(new LeftL(expectedXSize));
             TetrisModel model = new TetrisModel(shapeFactory.Object);
-            model.startNewGame(expectedXSize, expectedYSize);
+            model.StartNewGame(expectedXSize, expectedYSize);
 
             Shape expectedShape = new LeftL(expectedXSize);
             var partsCoordinates = expectedShape.PartsCoordinates;
@@ -67,7 +67,7 @@ namespace TetrisWPFTest
                 Assert.IsTrue(model.ActualShapePosition.Contains(part),"Before move is not OK");
             }
 
-            model.stepGame();
+            model.StepGame();
             for (int i = 0; i < partsCoordinates.Length; i++)
             {
                 partsCoordinates[i].y++;

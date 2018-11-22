@@ -34,48 +34,47 @@ namespace Tetris.Model
             shapeFactory = shapeFact ?? new ShapeFactory();
         }
 
-        public void startNewGame(int xSize, int ySize)
+        public void StartNewGame(int xSize, int ySize)
         {
             if (xSize < 4 || ySize < 10) throw new Exception("Game size should be bigger.");
             this.XSize = xSize;
             this.YSize = ySize;
 
-            generateNewGameTable();
-            nextShape = shapeFactory.getNewShape(xSize);
-            setShapes();
+            GenerateNewGameTable();
+            nextShape = shapeFactory.GetNewShape(xSize);
+            SetShapes();
             GameTime = 0;
             gameScore = 0;
             isGamePaused = false;
-            if (ScoreChanged != null)
-                ScoreChanged(this, new ScoreChangedArgs(gameScore));
+            ScoreChanged?.Invoke(this, new ScoreChangedArgs(gameScore));
         }
 
-        private void setShapes()
+        private void SetShapes()
         {
             actualShape = nextShape;
-            setViewTablePositionsNotFree(actualShape.PartsCoordinates);
-            setViewNextShapePositionsFree(nextShape.PartsCoordinates);
-            nextShape = shapeFactory.getNewShape(XSize);
-            setViewNextShapePositionsNotFree(nextShape.PartsCoordinates);
+            SetViewTablePositionsNotFree(actualShape.PartsCoordinates);
+            SetViewNextShapePositionsFree(nextShape.PartsCoordinates);
+            nextShape = shapeFactory.GetNewShape(XSize);
+            SetViewNextShapePositionsNotFree(nextShape.PartsCoordinates);
         }
 
-        public void pauseGame()
+        public void PauseGame()
         {
             isGamePaused = (isGamePaused) ? false : true;
         }
 
-        private void generateNewGameTable()
+        private void GenerateNewGameTable()
         {
             GameTable = new FieldStatus[YSize][];
             for (int i = 0; i < GameTable.Length; i++)
             {
-                GameTable[i] = getEmptyRow();
+                GameTable[i] = GetEmptyRow();
             }
         }
 
-        private FieldStatus[] getEmptyRow()
+        private FieldStatus[] GetEmptyRow()
         {
-            FieldStatus[] emptyRow = new FieldStatus[XSize];
+            var emptyRow = new FieldStatus[XSize];
             for (int i = 0; i < XSize; i++)
             {
                 emptyRow[i] = FieldStatus.FREE;
@@ -83,30 +82,30 @@ namespace Tetris.Model
             return emptyRow;
         }
 
-        public void stepGame()
+        public void StepGame()
         {
             GameTime++;
-            if(stepShape(Directions.DOWN) == false)
+            if(StepShape(Directions.DOWN) == false)
             {
-                shapeLanded();
+                ShapeLanded();
             }
         }
 
-        private void shapeLanded()
+        private void ShapeLanded()
         {
             foreach (Coordinates part in actualShape.PartsCoordinates)
             {
                 GameTable[part.y][part.x] = FieldStatus.NOT_FREE;
             }
-            maintainGameTable();
-            setShapes();
-            if (!isPositionCoordinatesFree(actualShape.PartsCoordinates))
+            MaintainGameTable();
+            SetShapes();
+            if (!IsPositionCoordinatesFree(actualShape.PartsCoordinates))
             {
-                GameOver?.Invoke(this, new GameOverArgs(GameTime));
+                GameOver?.Invoke(this, new GameOverArgs(gameScore));
             }
         }       
 
-        private void maintainGameTable()
+        private void MaintainGameTable()
         {
             int lastChangedRow = -1;
             for (int y = 0; y < GameTable.Length; y++)
@@ -118,20 +117,19 @@ namespace Tetris.Model
                     {
                         GameTable[i] = GameTable[i - 1];
                     }
-                    GameTable[0] = getEmptyRow();
+                    GameTable[0] = GetEmptyRow();
                     lastChangedRow = y;
                 }
             }
             if (lastChangedRow != -1)
             {
-                refreshTableViewFromRow(lastChangedRow);
-                if (ScoreChanged != null)
-                    ScoreChanged(this, new ScoreChangedArgs(gameScore));
+                RefreshTableViewFromRow(lastChangedRow);
+                ScoreChanged?.Invoke(this, new ScoreChangedArgs(gameScore));
             }
 
         }
 
-        private void refreshTableViewFromRow(int lastChangedRow)
+        private void RefreshTableViewFromRow(int lastChangedRow)
         {
             for (int yIndex = lastChangedRow; yIndex >=0; yIndex--)
             {
@@ -142,98 +140,94 @@ namespace Tetris.Model
             }
         }   
 
-        public void stepShapeRight()
+        public void StepShapeRight()
         {
-            stepShape(Directions.RIGHT);
+            StepShape(Directions.RIGHT);
         }
 
-        public void stepShapeLeft()
+        public void StepShapeLeft()
         {
-            stepShape(Directions.LEFT);
+            StepShape(Directions.LEFT);
         }
 
-        public void stepShapeDown()
+        public void StepShapeDown()
         {
-            if (stepShape(Directions.DOWN) == false)
+            if (StepShape(Directions.DOWN) == false)
             {
-                shapeLanded();
+                ShapeLanded();
             }
         }
 
-        private bool stepShape(Directions direction)
+        private bool StepShape(Directions direction)
         {
             if (actualShape == null || isGamePaused) return true;
-            Coordinates[] nextShapePositionCoordinates = actualShape.getShapePositionAfterMove(direction);
-            if (isPositionCoordinatesFree(nextShapePositionCoordinates))
+            var nextShapePositionCoordinates = actualShape.GetShapePositionAfterMove(direction);
+
+            return TryChangeShapePosition(nextShapePositionCoordinates);
+        }
+        public void RotateShape()
+        {
+            if (actualShape == null || isGamePaused) return;        
+            var nextShapePositionCoordinates = actualShape.GetShapePositionAfterRotation();
+
+            TryChangeShapePosition(nextShapePositionCoordinates);
+        }
+
+        private bool TryChangeShapePosition(Coordinates[] nextShapePositionCoordinates)
+        {
+            if (IsPositionCoordinatesFree(nextShapePositionCoordinates))
             {
-                setViewTablePositionsFree(actualShape.PartsCoordinates.Except(nextShapePositionCoordinates));
-                setViewTablePositionsNotFree(nextShapePositionCoordinates.Except(actualShape.PartsCoordinates));
+                SetViewTablePositionsFree(actualShape.PartsCoordinates.Except(nextShapePositionCoordinates));
+                SetViewTablePositionsNotFree(nextShapePositionCoordinates.Except(actualShape.PartsCoordinates));
                 actualShape.PartsCoordinates = nextShapePositionCoordinates;
                 return true;
             }
             return false;
         }
 
-        public void rotateShape()
+
+        private bool IsPositionCoordinatesFree(Coordinates[] shapePositionCoordinates)
         {
-            if (actualShape != null && !isGamePaused)
-            {
-                Coordinates[] nextShapePositionCoordinates = actualShape.getShapePositionAfterRotation();
-                if (isPositionCoordinatesFree(nextShapePositionCoordinates))
-                {
-                    setViewTablePositionsFree(actualShape.PartsCoordinates.Except(nextShapePositionCoordinates));
-                    setViewTablePositionsNotFree(nextShapePositionCoordinates.Except(actualShape.PartsCoordinates));
-                    actualShape.PartsCoordinates = nextShapePositionCoordinates;
-                }
-            }
+            return shapePositionCoordinates.All(IsPositionValid);
         }
 
-        private bool isPositionCoordinatesFree(Coordinates[] shapePositionCoordinates)
-        {
-            return shapePositionCoordinates.All(isPositionValid);
-        }
-
-        private bool isPositionValid(Coordinates position)
+        private bool IsPositionValid(Coordinates position)
         {
             return 0 <= position.x && position.x < XSize && 0 <= position.y && position.y < YSize &&
                 GameTable[position.y][position.x] == FieldStatus.FREE; 
         }
 
-        private void setViewTablePositionsFree(IEnumerable<Coordinates> freePositions)
+        private void SetViewTablePositionsFree(IEnumerable<Coordinates> freePositions)
         {
             foreach (Coordinates position in freePositions)
             {
-                if (FieldStatusChanged != null)
-                    FieldStatusChanged(this, new TetrisFieldChangedAgrs(position, FieldStatus.FREE));
+                FieldStatusChanged?.Invoke(this, new TetrisFieldChangedAgrs(position, FieldStatus.FREE));
             }
         }
 
-        private void setViewTablePositionsNotFree(IEnumerable<Coordinates> notFreePositions)
+        private void SetViewTablePositionsNotFree(IEnumerable<Coordinates> notFreePositions)
         {
             foreach (Coordinates position in notFreePositions)
             {
-                if (FieldStatusChanged != null)
-                    FieldStatusChanged(this, new TetrisFieldChangedAgrs(position, FieldStatus.NOT_FREE));
+                FieldStatusChanged?.Invoke(this, new TetrisFieldChangedAgrs(position, FieldStatus.NOT_FREE));
             }
         }
 
-        private void setViewNextShapePositionsFree(IEnumerable<Coordinates> freePositions)
+        private void SetViewNextShapePositionsFree(IEnumerable<Coordinates> freePositions)
         {
             foreach (Coordinates position in freePositions)
             {
                 Coordinates shiftedCoordinates = new Coordinates(position.x - XSize / 2 + 2, position.y);
-                if (NextShapeStatusChanged != null)
-                    NextShapeStatusChanged(this, new TetrisFieldChangedAgrs(shiftedCoordinates, FieldStatus.FREE));
+                NextShapeStatusChanged?.Invoke(this, new TetrisFieldChangedAgrs(shiftedCoordinates, FieldStatus.FREE));
             }
         }
 
-        private void setViewNextShapePositionsNotFree(IEnumerable<Coordinates> notFreePositions)
+        private void SetViewNextShapePositionsNotFree(IEnumerable<Coordinates> notFreePositions)
         {
             foreach (Coordinates position in notFreePositions)
             {
                 Coordinates shiftedCoordinates = new Coordinates(position.x - XSize / 2 + 2, position.y);
-                if (NextShapeStatusChanged != null)
-                    NextShapeStatusChanged(this, new TetrisFieldChangedAgrs(shiftedCoordinates, FieldStatus.NOT_FREE));
+                NextShapeStatusChanged?.Invoke(this, new TetrisFieldChangedAgrs(shiftedCoordinates, FieldStatus.NOT_FREE));
             }
         }
     }

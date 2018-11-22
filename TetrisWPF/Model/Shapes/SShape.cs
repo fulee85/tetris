@@ -13,10 +13,10 @@ namespace Tetris.Model.Shapes
         {
 
             center = new Coordinates(playFieldHorizontalSize / 2, 1);
-            shapePosition[0] = new Coordinates(center.x  + 1, center.y);
-            shapePosition[1] = center;
-            shapePosition[2] = new Coordinates(center.x, center.y + 1);
-            shapePosition[3] = new Coordinates(center.x - 1, center.y + 1);
+            shapeCoordinates[0] = new Coordinates(center.x  + 1, center.y);
+            shapeCoordinates[1] = center;
+            shapeCoordinates[2] = new Coordinates(center.x, center.y + 1);
+            shapeCoordinates[3] = new Coordinates(center.x - 1, center.y + 1);
         }
     }
 }

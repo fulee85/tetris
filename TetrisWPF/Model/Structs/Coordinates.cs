@@ -18,7 +18,7 @@ namespace Tetris.Model.Structs
             this.y = y;
         }
 
-        public void step(Directions direction)
+        public void Step(Directions direction)
         {
             switch (direction)
             {
@@ -34,7 +34,10 @@ namespace Tetris.Model.Structs
             }
         }
 
-        public static Coordinates rotate90Degrees(Coordinates center, Coordinates pointToRotate)
+        /// <summary>
+        /// Rotates a point 90° Clockwise around the center
+        /// </summary>
+        public static Coordinates Rotate90Degrees(Coordinates center, Coordinates pointToRotate)
         {
             Coordinates directionVector = pointToRotate - center;
             int helper = directionVector.x;

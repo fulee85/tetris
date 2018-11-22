@@ -8,8 +8,8 @@ namespace Tetris.Model.EventArg
 {
     public class GameOverArgs: EventArgs    
     {
-        public int GameTime { get; private set; }
+        public int Score { get; private set; }
 
-        public GameOverArgs(int time) { GameTime = time; }
+        public GameOverArgs(int score) { Score = score; }
     }
 }

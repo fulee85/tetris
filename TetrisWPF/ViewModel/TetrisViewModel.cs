@@ -86,49 +86,45 @@ namespace Tetris.ViewModel
                 });
             }
 
-            TablesizeChangeCommand = new DelegateCommand(param =>
-            {
-                switch (param.ToString()) {
-                    case "Small": ColumnNumber = 4;
-                        break;
-                    case "Medium": ColumnNumber = 8;
-                        break;
-                    case "Large": ColumnNumber = 12;
-                        break;
-                }
-            });
-            SizeDialogOK = new DelegateCommand(param =>
-                { OnOKButtonPressed(); }
-            );
-            RotateShape = new DelegateCommand(param => { _tetrisModel.rotateShape(); });
-            MoveShape = new DelegateCommand(param =>
-            {
-                switch (param.ToString())
-                {
-                    case "left":
-                        _tetrisModel.stepShapeLeft();
-                        break;
-                    case "right":
-                        _tetrisModel.stepShapeRight();
-                        break;
-                    case "down":
-                        _tetrisModel.stepShapeDown();
-                        break;
-                }
-            });
-            PauseGame = new DelegateCommand(param => { _tetrisModel.pauseGame(); });
-            ExitGame = new DelegateCommand(param => { exitGame(); });
-            StartNewGame = new DelegateCommand(param => { startNewGame(); });       
+            PauseGame = new DelegateCommand(param =>  _tetrisModel.PauseGame());
+            RotateShape = new DelegateCommand(param => _tetrisModel.RotateShape());
+            TablesizeChangeCommand = new DelegateCommand(ChangeTableSizeAction);
+            SizeDialogOK = new DelegateCommand(param =>OnOKButtonPressed());
+            MoveShape = new DelegateCommand(MoveShapeAction);
+            ExitGame = new DelegateCommand(param => Exit?.Invoke(this, EventArgs.Empty));
+            StartNewGame = new DelegateCommand(param => NewGame?.Invoke(this, EventArgs.Empty));       
         }
 
-        private void startNewGame()
+        private void ChangeTableSizeAction(object size)
         {
-            NewGame?.Invoke(this, EventArgs.Empty);
+            switch (size.ToString())
+            {
+                case "Small":
+                    ColumnNumber = 4;
+                    break;
+                case "Medium":
+                    ColumnNumber = 8;
+                    break;
+                case "Large":
+                    ColumnNumber = 12;
+                    break;
+            }
         }
 
-        private void exitGame()
+        private void MoveShapeAction(object direction)
         {
-            Exit?.Invoke(this, EventArgs.Empty);
+            switch (direction.ToString())
+            {
+                case "left":
+                    _tetrisModel.StepShapeLeft();
+                    break;
+                case "right":
+                    _tetrisModel.StepShapeRight();
+                    break;
+                case "down":
+                    _tetrisModel.StepShapeDown();
+                    break;
+            }
         }
 
         private void _tetrisModel_NextShapeStatusChanged(object sender, TetrisFieldChangedAgrs e)
@@ -150,7 +146,7 @@ namespace Tetris.ViewModel
 
         private void _tetrisModel_GameOver(object sender, GameOverArgs e)
         {
-            GameOver?.Invoke(this, new GameOverEventArgs { Time = e.GameTime });
+            GameOver?.Invoke(this, new GameOverEventArgs { Score = e.Score });
         }
 
         private void _tetrisModel_FieldStatusChanged(object sender, TetrisFieldChangedAgrs e)
@@ -173,7 +169,7 @@ namespace Tetris.ViewModel
                 label.IsFree = true;
             }
             WindowWidth = 110 + 25 * _columnNumber;
-            _tetrisModel.startNewGame(_columnNumber, _rowNumber);
+            _tetrisModel.StartNewGame(_columnNumber, _rowNumber);
         }
 
         public void CreateTable()

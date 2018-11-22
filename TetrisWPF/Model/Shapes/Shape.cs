@@ -12,7 +12,7 @@ namespace Tetris.Model.Shapes
     abstract public class Shape
     {
         protected Coordinates center;
-        protected Coordinates[] shapePosition;
+        protected Coordinates[] shapeCoordinates;
         protected static Random randomGenerator = new Random();
 
         protected Shape(int playFieldHorizontalSize)
@@ -21,32 +21,32 @@ namespace Tetris.Model.Shapes
             {
                 throw new Exception("Too small playfield!");
             }
-            shapePosition = new Coordinates[4];
+            shapeCoordinates = new Coordinates[4];
         }
 
         public Coordinates[] PartsCoordinates {
-            get { return shapePosition; }
-            set { value.CopyTo(shapePosition, 0); center = shapePosition[1]; }
+            get { return shapeCoordinates; }
+            set { value.CopyTo(shapeCoordinates, 0); center = shapeCoordinates[1]; }
         }
 
-        virtual public Coordinates[] getShapePositionAfterRotation()
+        virtual public Coordinates[] GetShapePositionAfterRotation()
         {
-            Coordinates[] positionAfterMove = new Coordinates[shapePosition.Length];
-            shapePosition.CopyTo(positionAfterMove, 0);
+            Coordinates[] positionAfterMove = new Coordinates[shapeCoordinates.Length];
+            shapeCoordinates.CopyTo(positionAfterMove, 0);
             for (int i = 0; i < positionAfterMove.Length; i++)
             {
-                positionAfterMove[i] = Coordinates.rotate90Degrees(center, positionAfterMove[i]); 
+                positionAfterMove[i] = Coordinates.Rotate90Degrees(center, positionAfterMove[i]); 
             }
             return positionAfterMove;
         }
 
-        virtual public Coordinates[] getShapePositionAfterMove(Directions direction)
+        virtual public Coordinates[] GetShapePositionAfterMove(Directions direction)
         {
-            Coordinates[] positionAfterMove = new Coordinates[shapePosition.Length];
-            shapePosition.CopyTo(positionAfterMove, 0);
-            for (int i = 0; i < shapePosition.Length; i++)
+            Coordinates[] positionAfterMove = new Coordinates[shapeCoordinates.Length];
+            shapeCoordinates.CopyTo(positionAfterMove, 0);
+            for (int i = 0; i < shapeCoordinates.Length; i++)
             {
-                positionAfterMove[i].step(direction);
+                positionAfterMove[i].Step(direction);
             }
             return positionAfterMove;
         }

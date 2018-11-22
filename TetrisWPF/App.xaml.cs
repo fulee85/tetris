@@ -56,12 +56,12 @@ namespace Tetris
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            _model.stepGame();
+            _model.StepGame();
         }
 
         private void _viewModel_NewGame(object sender, EventArgs e)
         {
-            Current.Dispatcher.BeginInvoke(new Action(() => this.startNewGame()));
+            Current.Dispatcher.BeginInvoke(new Action(() => this.StartNewGame()));
         }
 
         private void _viewModel_Exit(object sender, EventArgs e)
@@ -72,18 +72,18 @@ namespace Tetris
         private void _viewModel_GameOver(object sender, GameOverEventArgs e)
         {
             _timer.Stop();
-            var answer = MessageBox.Show("Game over, your time: " + e.Time + " s\n Would you like a new Game?", "Game over", MessageBoxButton.YesNo);
+            var answer = MessageBox.Show("Game over, your score: " + e.Score + " s\n Would you like a new Game?", "Game over", MessageBoxButton.YesNo);
             if (answer == MessageBoxResult.No)
             {
-                Current.Dispatcher.BeginInvoke(new Action(() => this.Shutdown()));
+                Current.Dispatcher.BeginInvoke(new Action(() => Shutdown()));
             }
             else
             {
-                Current.Dispatcher.BeginInvoke(new Action(() => this.startNewGame()));
+                Current.Dispatcher.BeginInvoke(new Action(() => StartNewGame()));
             }          
         }
 
-        private void startNewGame()
+        private void StartNewGame()
         {
             _timer.Stop();
             _view.Hide();
