@@ -22,7 +22,7 @@ namespace TetrisWPFTest
             int expectedYSize = 16;
             model.StartNewGame(expectedXSize, expectedYSize);
 
-            Assert.AreEqual(expectedXSize, model.XSize);
+            Assert.AreEqual(expectedXSize, model.TableHozizontalSize);
             Assert.AreEqual(expectedYSize, model.YSize);
             Assert.AreEqual(expectedXSize, model.GameTable[0].Length);
             Assert.AreEqual(expectedYSize, model.GameTable.Length);

@@ -129,7 +129,7 @@ namespace Tetris.ViewModel
 
         private void _tetrisModel_NextShapeStatusChanged(object sender, TetrisFieldChangedAgrs e)
         {
-            if (e.IsEmptyField)
+            if (e.IsFieldEmpty)
             {
                 NextShapeFields[e.YPosition * 4 + e.XPosition].IsFree = true;
             }
@@ -151,7 +151,7 @@ namespace Tetris.ViewModel
 
         private void _tetrisModel_FieldStatusChanged(object sender, TetrisFieldChangedAgrs e)
         {
-            if (e.IsEmptyField)
+            if (e.IsFieldEmpty)
             {
                 Fields[e.YPosition * _columnNumber + e.XPosition].IsFree = true;
             }

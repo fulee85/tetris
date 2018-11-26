@@ -17,20 +17,20 @@ namespace TetrisWPFTest
         public void Test_getShapePositionAfterRotation()
         {
             Shape testShape = new RightL(16);
-            Coordinates[] startCoordinates = new Coordinates[4];
-            startCoordinates[0] = new Coordinates(3, 3);
-            startCoordinates[1] = new Coordinates(3, 4);
-            startCoordinates[2] = new Coordinates(3, 5);
-            startCoordinates[3] = new Coordinates(4, 5);
+            Coordinate[] startCoordinates = new Coordinate[4];
+            startCoordinates[0] = new Coordinate(3, 3);
+            startCoordinates[1] = new Coordinate(3, 4);
+            startCoordinates[2] = new Coordinate(3, 5);
+            startCoordinates[3] = new Coordinate(4, 5);
             testShape.PartsCoordinates = startCoordinates;
 
-            Coordinates[] expectedCoordinatesAfterRotation = new Coordinates[4];
-            expectedCoordinatesAfterRotation[0] = new Coordinates(4, 4);
-            expectedCoordinatesAfterRotation[1] = new Coordinates(3, 4);
-            expectedCoordinatesAfterRotation[2] = new Coordinates(2, 4);
-            expectedCoordinatesAfterRotation[3] = new Coordinates(2, 5);
+            Coordinate[] expectedCoordinatesAfterRotation = new Coordinate[4];
+            expectedCoordinatesAfterRotation[0] = new Coordinate(4, 4);
+            expectedCoordinatesAfterRotation[1] = new Coordinate(3, 4);
+            expectedCoordinatesAfterRotation[2] = new Coordinate(2, 4);
+            expectedCoordinatesAfterRotation[3] = new Coordinate(2, 5);
 
-            Coordinates[] coordinatesAfterRotation = testShape.GetShapePositionAfterRotation();
+            Coordinate[] coordinatesAfterRotation = testShape.GetShapePositionAfterRotation();
 
             for (int i = 0; i < 4; i++)
             {
@@ -42,20 +42,20 @@ namespace TetrisWPFTest
         public void Test_getShapePositionAfterMoveDown()
         {
             Shape testShape = new SShape(16);
-            Coordinates[] startCoordinates = new Coordinates[4];
-            startCoordinates[0] = new Coordinates(3, 3);
-            startCoordinates[1] = new Coordinates(3, 4);
-            startCoordinates[2] = new Coordinates(4, 4);
-            startCoordinates[3] = new Coordinates(4, 5);
+            Coordinate[] startCoordinates = new Coordinate[4];
+            startCoordinates[0] = new Coordinate(3, 3);
+            startCoordinates[1] = new Coordinate(3, 4);
+            startCoordinates[2] = new Coordinate(4, 4);
+            startCoordinates[3] = new Coordinate(4, 5);
             testShape.PartsCoordinates = startCoordinates;
 
-            Coordinates[] expectedCoordinatesAfterMoveDown = new Coordinates[4];
-            expectedCoordinatesAfterMoveDown[0] = new Coordinates(3, 4);
-            expectedCoordinatesAfterMoveDown[1] = new Coordinates(3, 5);
-            expectedCoordinatesAfterMoveDown[2] = new Coordinates(4, 5);
-            expectedCoordinatesAfterMoveDown[3] = new Coordinates(4, 6);
+            Coordinate[] expectedCoordinatesAfterMoveDown = new Coordinate[4];
+            expectedCoordinatesAfterMoveDown[0] = new Coordinate(3, 4);
+            expectedCoordinatesAfterMoveDown[1] = new Coordinate(3, 5);
+            expectedCoordinatesAfterMoveDown[2] = new Coordinate(4, 5);
+            expectedCoordinatesAfterMoveDown[3] = new Coordinate(4, 6);
 
-            Coordinates[] coordinatesAfterMoveDown = testShape.GetShapePositionAfterMove(Directions.DOWN);
+            Coordinate[] coordinatesAfterMoveDown = testShape.GetShapePositionAfterMove(Directions.DOWN);
 
             for (int i = 0; i < 4; i++)
             {
@@ -67,20 +67,20 @@ namespace TetrisWPFTest
         public void Test_getShapePositionAfterMoveLeft()
         {
             Shape testShape = new ZShape(16);
-            Coordinates[] startCoordinates = new Coordinates[4];
-            startCoordinates[0] = new Coordinates(3, 3);
-            startCoordinates[1] = new Coordinates(3, 4);
-            startCoordinates[2] = new Coordinates(2, 4);
-            startCoordinates[3] = new Coordinates(2, 5);
+            Coordinate[] startCoordinates = new Coordinate[4];
+            startCoordinates[0] = new Coordinate(3, 3);
+            startCoordinates[1] = new Coordinate(3, 4);
+            startCoordinates[2] = new Coordinate(2, 4);
+            startCoordinates[3] = new Coordinate(2, 5);
             testShape.PartsCoordinates = startCoordinates;
 
-            Coordinates[] expectedCoordinatesAfterMoveLeft = new Coordinates[4];
-            expectedCoordinatesAfterMoveLeft[0] = new Coordinates(2, 3);
-            expectedCoordinatesAfterMoveLeft[1] = new Coordinates(2, 4);
-            expectedCoordinatesAfterMoveLeft[2] = new Coordinates(1, 4);
-            expectedCoordinatesAfterMoveLeft[3] = new Coordinates(1, 5);
+            Coordinate[] expectedCoordinatesAfterMoveLeft = new Coordinate[4];
+            expectedCoordinatesAfterMoveLeft[0] = new Coordinate(2, 3);
+            expectedCoordinatesAfterMoveLeft[1] = new Coordinate(2, 4);
+            expectedCoordinatesAfterMoveLeft[2] = new Coordinate(1, 4);
+            expectedCoordinatesAfterMoveLeft[3] = new Coordinate(1, 5);
 
-            Coordinates[] coordinatesAfterMoveLeft = testShape.GetShapePositionAfterMove(Directions.LEFT);
+            Coordinate[] coordinatesAfterMoveLeft = testShape.GetShapePositionAfterMove(Directions.LEFT);
 
             for (int i = 0; i < 4; i++)
             {
@@ -92,20 +92,20 @@ namespace TetrisWPFTest
         public void Test_getShapePositionAfterMoveRight()
         {
             Shape testShape = new Straight(16);
-            Coordinates[] startCoordinates = new Coordinates[4];
-            startCoordinates[0] = new Coordinates(3, 3);
-            startCoordinates[1] = new Coordinates(3, 4);
-            startCoordinates[2] = new Coordinates(3, 5);
-            startCoordinates[3] = new Coordinates(3, 6);
+            Coordinate[] startCoordinates = new Coordinate[4];
+            startCoordinates[0] = new Coordinate(3, 3);
+            startCoordinates[1] = new Coordinate(3, 4);
+            startCoordinates[2] = new Coordinate(3, 5);
+            startCoordinates[3] = new Coordinate(3, 6);
             testShape.PartsCoordinates = startCoordinates;
 
-            Coordinates[] expectedCoordinatesAfterMoveRight = new Coordinates[4];
-            expectedCoordinatesAfterMoveRight[0] = new Coordinates(4, 3);
-            expectedCoordinatesAfterMoveRight[1] = new Coordinates(4, 4);
-            expectedCoordinatesAfterMoveRight[2] = new Coordinates(4, 5);
-            expectedCoordinatesAfterMoveRight[3] = new Coordinates(4, 6);
+            Coordinate[] expectedCoordinatesAfterMoveRight = new Coordinate[4];
+            expectedCoordinatesAfterMoveRight[0] = new Coordinate(4, 3);
+            expectedCoordinatesAfterMoveRight[1] = new Coordinate(4, 4);
+            expectedCoordinatesAfterMoveRight[2] = new Coordinate(4, 5);
+            expectedCoordinatesAfterMoveRight[3] = new Coordinate(4, 6);
 
-            Coordinates[] coordinatesAfterMoveRight = testShape.GetShapePositionAfterMove(Directions.RIGHT);
+            Coordinate[] coordinatesAfterMoveRight = testShape.GetShapePositionAfterMove(Directions.RIGHT);
 
             for (int i = 0; i < 4; i++)
             {
