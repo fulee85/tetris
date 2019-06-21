@@ -11,45 +11,6 @@ namespace TetrisWPFTest
     [TestClass]
     public class TetrisModelTest
     {
-
-        [TestMethod]
-        public void Test_TetrisModel_startNewGame()
-        {
-
-            TetrisModel model = new TetrisModel();
-
-            int expectedXSize = 8;
-            int expectedYSize = 16;
-            model.StartNewGame(expectedXSize, expectedYSize);
-
-            Assert.AreEqual(expectedXSize, model.XSize);
-            Assert.AreEqual(expectedYSize, model.YSize);
-            Assert.AreEqual(expectedXSize, model.GameTable[0].Length);
-            Assert.AreEqual(expectedYSize, model.GameTable.Length);
-
-            foreach (var row in model.GameTable)
-            {
-                foreach (var element in row)
-                {
-                    Assert.AreEqual(FieldStatus.FREE, element);
-                }
-            }
-        }
-
-        [TestMethod]
-        public void Test_TetrisModel_StepGame_GameTime()
-        {
-            int expectedXSize = 8;
-            int expectedYSize = 16;                  
-            TetrisModel model = new TetrisModel();
-            model.StartNewGame(expectedXSize, expectedYSize);
-
-            model.StepGame();
-            Assert.AreEqual(1, model.GameTime);
-            model.StepGame();
-            Assert.AreEqual(2, model.GameTime);
-        }
-
         [TestMethod]
         public void Test_TetrisModel_StepGame_CheckShapeMove()
         {
