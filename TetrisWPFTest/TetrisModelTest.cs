@@ -17,11 +17,11 @@ namespace TetrisWPFTest
             int expectedXSize = 4;
             int expectedYSize = 16;
             var shapeFactory = new Mock<IShapeFactory>();
-            shapeFactory.Setup(sf => sf.GetNewShape(expectedXSize)).Returns(new LeftL(expectedXSize));
+            shapeFactory.Setup(sf => sf.GetNewShape(expectedXSize / 2)).Returns(new LeftL(expectedXSize / 2));
             TetrisModel model = new TetrisModel(shapeFactory.Object);
             model.StartNewGame(expectedXSize, expectedYSize);
 
-            Shape expectedShape = new LeftL(expectedXSize);
+            Shape expectedShape = new LeftL(expectedXSize / 2);
             var partsCoordinates = expectedShape.PartsCoordinates;
             foreach (var part in partsCoordinates)
             {
