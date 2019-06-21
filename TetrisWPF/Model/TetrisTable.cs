@@ -7,18 +7,15 @@ namespace Tetris.Model
 {
     public class TetrisTable
     {
-        private readonly TetrisModel tetrisModel;
-
         public FieldStatus[][] GameTable { get; private set; }
         public int XSize { get; private set; }
         public int YSize { get; private set; }
 
-        public TetrisTable(int xSize, int ySize, TetrisModel tetrisModel)
+        public TetrisTable(int xSize, int ySize)
         {
             if (xSize < 4 || ySize < 10) throw new Exception("Game size should be bigger.");
             this.XSize = xSize;
             this.YSize = ySize;
-            this.tetrisModel = tetrisModel;
             GenerateNewGameTable();
         }
 

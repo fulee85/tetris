@@ -11,13 +11,12 @@ namespace Tetris.Model
     {
         private Shape actualShape;
         private Shape nextShape;
-        private IShapeFactory shapeFactory;
+        private readonly IShapeFactory shapeFactory;
         private int gameScore;
         private bool isGamePaused;
         private TetrisTable tetrisTable;
 
         private int TableHorizontalCenter { get { return TableHozizontalSize / 2; } }
-        public int GameTime { get; private set; }
         public int TableHozizontalSize { get; private set; }
         private int GameScore {
             get
@@ -45,14 +44,12 @@ namespace Tetris.Model
 
         public void StartNewGame(int xSize, int ySize)
         {
-            tetrisTable = new TetrisTable(xSize, ySize, this);
+            tetrisTable = new TetrisTable(xSize, ySize);
             TableHozizontalSize = xSize;
             nextShape = shapeFactory.GetNewShape(TableHorizontalCenter);
             SetShapes();
-            GameTime = 0;
-            gameScore = 0;
+            GameScore = 0;
             isGamePaused = false;
-            ScoreChanged?.Invoke(this, new ScoreChangedArgs(gameScore));
         }
 
         private void ShapeLanded()
@@ -95,12 +92,11 @@ namespace Tetris.Model
 
         public void PauseGame()
         {
-            isGamePaused = (isGamePaused) ? false : true;
+            isGamePaused = !isGamePaused;
         }
         
         public void StepGame()
         {
-            GameTime++;
             StepShapeDown();
         }
 
@@ -116,7 +112,7 @@ namespace Tetris.Model
 
         public void StepShapeDown()
         {
-            if (StepShape(Directions.DOWN) == false)
+            if (!StepShape(Directions.DOWN))
             {
                 ShapeLanded();
             }

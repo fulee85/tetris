@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
-using Tetris.View;
 using Tetris.Model;
 using Tetris.Model.EventArg;
 
@@ -16,7 +10,9 @@ namespace Tetris.ViewModel
     {
         public ObservableCollection<TetrisField> Fields { get; set; }
         public ObservableCollection<TetrisField> NextShapeFields { get; set; }
-        private int _rowNumber = 16, _columnNumber = 8;
+
+        private readonly int _rowNumber = 16;
+        private int _columnNumber = 8;
         private int _score;
         private double _windowWidth;
 
@@ -33,7 +29,7 @@ namespace Tetris.ViewModel
         public event EventHandler NewGame;
         public event EventHandler<GameOverEventArgs> GameOver;
 
-        private TetrisModel _tetrisModel;
+        private readonly TetrisModel _tetrisModel;
 
         public int ColumnNumber
         {
@@ -57,7 +53,7 @@ namespace Tetris.ViewModel
                 OnPropertyChanged();
             }
         }
-    
+
         public double WindowWidth
         {
             get { return _windowWidth; }
@@ -86,13 +82,13 @@ namespace Tetris.ViewModel
                 });
             }
 
-            PauseGame = new DelegateCommand(param =>  _tetrisModel.PauseGame());
+            PauseGame = new DelegateCommand(param => _tetrisModel.PauseGame());
             RotateShape = new DelegateCommand(param => _tetrisModel.RotateShape());
             TablesizeChangeCommand = new DelegateCommand(ChangeTableSizeAction);
-            SizeDialogOK = new DelegateCommand(param =>OnOKButtonPressed());
+            SizeDialogOK = new DelegateCommand(param => OnOKButtonPressed());
             MoveShape = new DelegateCommand(MoveShapeAction);
             ExitGame = new DelegateCommand(param => Exit?.Invoke(this, EventArgs.Empty));
-            StartNewGame = new DelegateCommand(param => NewGame?.Invoke(this, EventArgs.Empty));       
+            StartNewGame = new DelegateCommand(param => NewGame?.Invoke(this, EventArgs.Empty));
         }
 
         private void ChangeTableSizeAction(object size)
@@ -177,7 +173,7 @@ namespace Tetris.ViewModel
             Fields.Clear();
             for (int i = 0; i < _rowNumber * _columnNumber; i++)
             {
-                Fields.Add(new TetrisField{ IsFree = true });
+                Fields.Add(new TetrisField { IsFree = true });
             }
         }
 

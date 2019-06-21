@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tetris.Model.Structs;
-
-namespace Tetris.Model.Structs
+﻿namespace Tetris.Model.Structs
 {
     public struct Coordinate
     {
@@ -46,7 +39,7 @@ namespace Tetris.Model.Structs
             return directionVector + center;
         }
 
-        public static Coordinate operator+( Coordinate i, Coordinate j)
+        public static Coordinate operator +(Coordinate i, Coordinate j)
         {
             Coordinate k;
             k.x = i.x + j.x;

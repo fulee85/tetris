@@ -9,7 +9,7 @@ namespace Tetris.Model.Shapes
     {
         protected Coordinate center;
         protected Coordinate[] shapeCoordinates;
-        protected static Random randomGenerator = new Random();
+        protected readonly static Random randomGenerator = new Random();
 
         protected Shape(int tableCenter)
         {

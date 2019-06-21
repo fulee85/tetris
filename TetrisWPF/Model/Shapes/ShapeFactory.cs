@@ -5,11 +5,12 @@ namespace Tetris.Model.Shapes
 {
     public class ShapeFactory : IShapeFactory
     {
-        private Random randomGenerator;
-        private readonly int shapesNumber = 7;
+        private readonly Random randomGenerator;
+        private readonly int shapesNumber;
 
         public ShapeFactory()
         {
+            shapesNumber = Enum.GetNames(typeof(ShapeTypes)).Length;
             randomGenerator = new Random();
         }
 
